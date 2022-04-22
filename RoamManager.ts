@@ -1,6 +1,6 @@
 //import { store } from "utils/store";
 import Roam from "roam-reactnative";
-import { Platform, Alert } from "react-native";
+import { Platform, Alert, StyleSheet } from "react-native";
 //import { client as apolloClient } from "api/apolloClient";
 //import { SET_TRACK_ID_MUTATION } from "./../api/graphql/mutation";
 import DeviceInfo from "react-native-device-info";
@@ -37,19 +37,19 @@ export default {
 
   configure() {
     // https://github.com/roam-ai/roam-reactnative#accuracy-engine
-    Roam.enableAccuracyEngine(); // Roam.enableAccuracyEngine(50);
+    //Roam.enableAccuracyEngine(); // Roam.enableAccuracyEngine(50);
 
     // https://github.com/roam-ai/roam-reactnative#offline-location-tracking
-    Roam.offlineLocationTracking(true);
+    //Roam.offlineLocationTracking(true);
 
     // https://github.com/roam-ai/roam-reactnative#allow-mock-location-tracking
     // Roam.allowMockLocation(true);
 
     // https://github.com/roam-ai/roam-reactnative#update-location-when-stationary
-    Roam.updateLocationWhenStationary(10);
+    //Roam.updateLocationWhenStationary(10);
 
     // https://github.com/roam-ai/roam-reactnative/wiki/Utility-Methods#set-tracking-in-appstate
-    Roam.setTrackingInAppState(Roam.AppState.ALWAYS_ON);
+    //Roam.setTrackingInAppState(Roam.AppState.ALWAYS_ON);
   },
 
   createOrLoadRoamUser() {
@@ -97,13 +97,26 @@ export default {
       },
     };
 
-    Roam.publishAndSave(metadataJSON);
+    //Roam.publishAndSave(metadataJSON);
+    console.log('start tracking')
 
     // https://github.com/roam-ai/roam-reactnative#start-tracking
-    Roam.startTracking("BALANCED"); // ACTIVE | BALANCED | PASSIVE
+    //Roam.startTracking("BALANCED"); // ACTIVE | BALANCED | PASSIVE
+
+    if (Platform.OS === 'android') {
+      Roam.setForegroundNotification(
+        true,
+        'Test Project',
+        'App is fetching location.',
+        'mipmap-hdpi/ic_launcher',
+        'com.testproject.MainActivity',
+      );
+    }
+
+    Roam.startSelfTrackingTimeInterval(5, Roam.DesiredAccuracy.HIGH);
 
     // https://github.com/roam-ai/roam-reactnative#subscribe-messages
-    Roam.subscribe(Roam.SubscribeListener.BOTH, '625d097fb2ab4e35e9621e81');
+    //Roam.subscribe(Roam.SubscribeListener.BOTH, '625d097fb2ab4e35e9621e81');
 
     // Custom tracking mode if needed
     // https://github.com/roam-ai/roam-reactnative#custom-tracking-modes
@@ -127,35 +140,45 @@ export default {
 
   startListener() {
     // https://github.com/roam-ai/roam-reactnative#listeners
-    Roam.toggleListener(
-      true,
-      true,
-      (success: any) => {
-        console.log("Listener started: ", success);
-      },
-      (error: any) => {
-        console.log("Listener error: ", error);
-      },
-    );
+    // Roam.toggleListener(
+    //   true,
+    //   true,
+    //   (success: any) => {
+    //     console.log("Listener started: ", success);
+    //   },
+    //   (error: any) => {
+    //     console.log("Listener error: ", error);
+    //   },
+    // );
+
+    console.log('start listener')
 
     Roam.startListener("location", (location) => {
-      Alert.alert(JSON.stringify(location));
+      //Alert.alert(JSON.stringify(location));
       console.log(JSON.stringify(location))
     });
   },
 
   stop() {
+    console.log('stop tracking')
     //const user = store.getState().user.profile;
 
-    Roam.disableAccuracyEngine();
-    Roam.stopPublishing();
+    //Roam.disableAccuracyEngine();
+    //Roam.stopPublishing();
     Roam.stopTracking();
-    Roam.unSubscribe(Roam.SubscribeListener.LOCATION, '625d097fb2ab4e35e9621e81');
+    //Roam.unSubscribe(Roam.SubscribeListener.LOCATION, '625d097fb2ab4e35e9621e81');
+    
+  },
+
+  stopListener(){
     Roam.stopListener("location", (location) => {
       console.log(JSON.stringify(location))
-    });
-  },
+     });
+  }
+
 };
+
+
 
 // useEffect(() => {
 //   RoamManager.checkPermission();
@@ -164,3 +187,4 @@ export default {
 //   RoamManager.startTracking();
 //   RoamManager.startListener();
 // }, []);
+

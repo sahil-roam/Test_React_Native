@@ -1,5 +1,6 @@
 #import <React/RCTBridgeDelegate.h>
 #import <UIKit/UIKit.h>
+#import <Roam/Roam.h>
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, RCTBridgeDelegate>
 

@@ -1,10 +1,11 @@
 #import "AppDelegate.h"
-
+#import <Roam/Roam.h>
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
 #import <React/RCTAppSetupUtils.h>
+
 
 #if RCT_NEW_ARCH_ENABLED
 #import <React/CoreModulesPlugins.h>
@@ -29,11 +30,17 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  
+  
   RCTAppSetupPrepareApp(application);
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
+  
+  
 
 #if RCT_NEW_ARCH_ENABLED
+  [Roam initialize:@"63a9ceb83843c7e0259468664153ceb8da34f6407c6bbe8bf67fb919ad2e9ef2" :NULL :NULL];
+  
   _contextContainer = std::make_shared<facebook::react::ContextContainer const>();
   _reactNativeConfig = std::make_shared<facebook::react::EmptyReactNativeConfig const>();
   _contextContainer->insert("ReactNativeConfig", _reactNativeConfig);

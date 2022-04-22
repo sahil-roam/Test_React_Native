@@ -57,7 +57,7 @@ public class MainApplication extends Application implements ReactApplication {
     ReactFeatureFlags.useTurboModules = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
-      Roam.initialize(this, "YOUR-KEY-HERE");
+      Roam.initialize(this, "63a9ceb83843c7e0259468664153ceb8da34f6407c6bbe8bf67fb919ad2e9ef2");
   }
 
   /**
